@@ -34,13 +34,17 @@ in order to create the Flutter project.
   
 ### Add Authentication
 
-Run `amplify add auth` and allow guest access.
+Run `amplify add auth` and allow guest access (Manual configuration).
 
 ### Add DataStore
 
-- Run `amplify add api` and select GraphQL.
-- Adjust the GraphQL schema in schema.graphql
+- Run `amplify add api` and select GraphQL
+- Adjust the GraphQL schema in [schema.graphql](amplify/backend/api/flutteramplifydemo/schema.graphql)
 - Generate code from the schema with `amplify codegen models`
+
+### Push backend to cloud
+
+Run `amplify push` in order to push your changes to the cloud.
 
 ### Implement frontend
 
