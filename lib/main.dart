@@ -1,4 +1,3 @@
-import 'package:amplify_analytics_pinpoint/amplify_analytics_pinpoint.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_datastore/amplify_datastore.dart';
 import 'package:amplify_flutter/amplify.dart';
@@ -39,10 +38,10 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _configureAmplify() async {
+    if (!mounted) return;
 
     Amplify.addPlugins([
       AmplifyAuthCognito(),
-      AmplifyAnalyticsPinpoint(),
       AmplifyDataStore(modelProvider: ModelProvider.instance),
     ]);
 
@@ -51,5 +50,9 @@ class _MyAppState extends State<MyApp> {
     } on AmplifyAlreadyConfiguredException {
       print("Tried to reconfigure Amplify; this can occur when your app restarts on Android.");
     }
+
+    // Mock sign in
+    Amplify.Auth.signOut();
+    Amplify.Auth.signIn(username: 'Moritz', password: 'Test12345');
   }
 }

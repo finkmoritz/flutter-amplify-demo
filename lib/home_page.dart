@@ -1,4 +1,7 @@
+import 'package:amplify_datastore/amplify_datastore.dart';
+import 'package:amplify_flutter/amplify.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_amplify_demo/models/Message.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -7,10 +10,12 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   var controller = TextEditingController();
-  var messages = <String>[
-    'Hello World!',
-    'Hi :)'
-  ];
+  var messages = <Message>[];
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,8 +46,8 @@ class _HomePageState extends State<HomePage> {
       itemCount: messages.length,
       itemBuilder: (context, index) {
         return ListTile(
-          title: Text('User'),
-          subtitle: Text(messages[index]),
+          title: Text(messages[index].user),
+          subtitle: Text(messages[index].content),
         );
       }
     );
@@ -59,13 +64,32 @@ class _HomePageState extends State<HomePage> {
         IconButton(
           icon: Icon(Icons.send,),
           onPressed: () {
+            _postMessage(controller.text);
             setState(() {
-              messages.add(controller.text);
               controller.text = '';
             });
           },
         ),
       ],
     );
+  }
+
+  _updateMessages() async {
+    messages = await Amplify.DataStore.query(
+      Message.classType,
+      sortBy: [Message.TIMESTAMP.ascending()],
+    );
+    setState(() {});
+  }
+
+  _postMessage(String content) async {
+    //var user = await Amplify.Auth.getCurrentUser(); //FIXME
+    var message = Message(
+      user: 'Unknown User', //user.username, //FIXME
+      timestamp: TemporalDateTime.now(),
+      content: content,
+    );
+    Amplify.DataStore.save(message);
+    _updateMessages();
   }
 }
