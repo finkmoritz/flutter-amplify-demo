@@ -15,6 +15,17 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    _subscribe();
+  }
+
+  _subscribe() {
+    Amplify.DataStore
+        .observe(Message.classType)
+        .listen(
+            (event) {
+              _updateMessages();
+            }
+        );
   }
 
   @override
@@ -90,6 +101,5 @@ class _HomePageState extends State<HomePage> {
       content: content,
     );
     Amplify.DataStore.save(message);
-    _updateMessages();
   }
 }
