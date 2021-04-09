@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_amplify_demo/pages/chat_page.dart';
+import 'package:flutter_amplify_demo/pages/auth/auth_page.dart';
+import 'package:flutter_amplify_demo/pages/chat/chat_page.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -10,7 +11,7 @@ class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
   PageController _pageController;
 
-  ChatPage _authPage;
+  AuthPage _authPage;
   ChatPage _chatPage;
 
   @override
@@ -18,7 +19,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     _pageController = PageController();
 
-    _authPage = ChatPage();
+    _authPage = AuthPage();
     _chatPage = ChatPage();
   }
 

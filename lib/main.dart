@@ -10,16 +10,15 @@ import 'amplifyconfiguration.dart';
 import 'models/ModelProvider.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(FlutterAmplifyDemo());
 }
 
-class MyApp extends StatefulWidget {
-  // This widget is the root of your application.
+class FlutterAmplifyDemo extends StatefulWidget {
   @override
-  _MyAppState createState() => _MyAppState();
+  _FlutterAmplifyDemoState createState() => _FlutterAmplifyDemoState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _FlutterAmplifyDemoState extends State<FlutterAmplifyDemo> {
 
   @override
   initState() {
