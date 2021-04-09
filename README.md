@@ -17,8 +17,9 @@ in order to create the Flutter project.
 
 ### Initialize Amplify
 
-- Run `amplify configure` and enter your access key.
-- Set the iOS deployment target to 13.0 in the Podfile and add:
+- Run `amplify configure` and enter your access key
+- Set the Android minSdkVersion to 21 in your [app/build.gradle](android/app/build.gradle) file
+- Set the iOS deployment target to 13.0 in the [Podfile](ios/Podfile) and add:
   `target.build_configurations.each do |config|
   config.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET'
   end`
@@ -27,6 +28,7 @@ in order to create the Flutter project.
     - `amplify_auth_cognito: '<1.0.0'`
     - `amplify_analytics_pinpoint: '<1.0.0'`
     - `amplify_datastore: '<1.0.0'`
+    - `amplify_api: '<1.0.0'`
 - Run `amplify init`
 - Initialize Amplify in the application using the provided code fragment from the
 [docs](https://docs.amplify.aws/lib/project-setup/create-application/q/platform/flutter#n3-provision-the-backend-with-amplify-cli)
@@ -41,6 +43,9 @@ Run `amplify add auth` and allow guest access (Manual configuration).
 - Run `amplify add api` and select GraphQL
 - Adjust the GraphQL schema in [schema.graphql](amplify/backend/api/flutteramplifydemo/schema.graphql)
 - Generate code from the schema with `amplify codegen models`
+
+### Add Analytics
+- Run `amplify add analytics` and select Amazon Pinpoint.
 
 ### Push backend to cloud
 

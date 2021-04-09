@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_amplify_demo/pages/analytics/analytics_page.dart';
 import 'package:flutter_amplify_demo/pages/auth/auth_page.dart';
 import 'package:flutter_amplify_demo/pages/chat/chat_page.dart';
 
@@ -13,6 +14,7 @@ class _HomePageState extends State<HomePage> {
 
   AuthPage _authPage;
   ChatPage _chatPage;
+  AnalyticsPage _analyticsPage;
 
   @override
   void initState() {
@@ -21,6 +23,7 @@ class _HomePageState extends State<HomePage> {
 
     _authPage = AuthPage();
     _chatPage = ChatPage();
+    _analyticsPage = AnalyticsPage();
   }
 
   @override
@@ -34,6 +37,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Flutter Amplify Demo'),
+        automaticallyImplyLeading: false,
       ),
       body: PageView(
         controller: _pageController,
@@ -43,6 +47,7 @@ class _HomePageState extends State<HomePage> {
         children: [
           _authPage,
           _chatPage,
+          _analyticsPage,
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -64,6 +69,11 @@ class _HomePageState extends State<HomePage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.chat),
             label: 'Chat',
+            backgroundColor: Theme.of(context).primaryColor,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.analytics),
+            label: 'Analytics',
             backgroundColor: Theme.of(context).primaryColor,
           ),
         ],
