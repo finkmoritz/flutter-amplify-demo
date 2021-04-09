@@ -1,5 +1,6 @@
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_amplify_demo/pages/auth/password_management/password_change_page.dart';
 import 'package:flutter_amplify_demo/services/auth_service.dart';
 
 class SignOutPage extends StatelessWidget {
@@ -23,6 +24,14 @@ class SignOutPage extends StatelessWidget {
             username,
             textAlign: TextAlign.center,
             style: TextStyle(fontWeight: FontWeight.bold,),
+          ),
+          TextButton(
+            child: Text('ChangePassword'),
+            onPressed: () {
+              Navigator.push(context,
+                MaterialPageRoute(builder: (context) => PasswordChangePage()),
+              );
+            },
           ),
           ElevatedButton(
             child: Text('Sign Out'),
