@@ -52,9 +52,5 @@ class _MyAppState extends State<MyApp> {
     } on AmplifyAlreadyConfiguredException {
       print("Tried to reconfigure Amplify; this can occur when your app restarts on Android.");
     }
-
-    // Mock sign in FIXME
-    //Amplify.Auth.signOut();
-    //Amplify.Auth.signIn(username: 'Moritz', password: 'Test12345');
   }
 }

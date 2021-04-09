@@ -1,7 +1,5 @@
-import 'package:amplify_datastore/amplify_datastore.dart';
-import 'package:amplify_flutter/amplify.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_amplify_demo/models/Message.dart';
+import 'package:flutter_amplify_demo/pages/chat_page.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -9,23 +7,25 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  var controller = TextEditingController();
-  var messages = <Message>[];
+  int _currentIndex = 0;
+  PageController _pageController;
+
+  ChatPage _authPage;
+  ChatPage _chatPage;
 
   @override
   void initState() {
     super.initState();
-    _subscribe();
+    _pageController = PageController();
+
+    _authPage = ChatPage();
+    _chatPage = ChatPage();
   }
 
-  _subscribe() {
-    Amplify.DataStore
-        .observe(Message.classType)
-        .listen(
-            (event) {
-              _updateMessages();
-            }
-        );
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
   }
 
   @override
@@ -34,72 +34,39 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text('Flutter Amplify Demo'),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(32.0),
-        child: _buildBody(),
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: (index) => setState(() {
+          _currentIndex = index;
+        }),
+        children: [
+          _authPage,
+          _chatPage,
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: (index) => setState(() {
+          _currentIndex = index;
+          _pageController.animateToPage(
+              index,
+              duration: Duration(milliseconds: 500),
+              curve: Curves.easeOut
+          );
+        }),
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.login),
+            label: 'Auth',
+            backgroundColor: Theme.of(context).primaryColor,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.chat),
+            label: 'Chat',
+            backgroundColor: Theme.of(context).primaryColor,
+          ),
+        ],
       ),
     );
-  }
-
-  Widget _buildBody() {
-    return Column(
-      children: [
-        Expanded(
-          child: _buildChatHistory(),
-        ),
-        _buildChatInput(),
-      ],
-    );
-  }
-
-  Widget _buildChatHistory() {
-    return ListView.builder(
-      itemCount: messages.length,
-      itemBuilder: (context, index) {
-        return ListTile(
-          title: Text(messages[index].user),
-          subtitle: Text(messages[index].content),
-        );
-      }
-    );
-  }
-
-  Widget _buildChatInput() {
-    return Row(
-      children: [
-        Expanded(
-          child: TextFormField(
-            controller: controller,
-          ),
-        ),
-        IconButton(
-          icon: Icon(Icons.send,),
-          onPressed: () {
-            _postMessage(controller.text);
-            setState(() {
-              controller.text = '';
-            });
-          },
-        ),
-      ],
-    );
-  }
-
-  _updateMessages() async {
-    messages = await Amplify.DataStore.query(
-      Message.classType,
-      sortBy: [Message.TIMESTAMP.ascending()],
-    );
-    setState(() {});
-  }
-
-  _postMessage(String content) async {
-    //var user = await Amplify.Auth.getCurrentUser(); //FIXME
-    var message = Message(
-      user: 'Unknown User', //user.username, //FIXME
-      timestamp: TemporalDateTime.now(),
-      content: content,
-    );
-    Amplify.DataStore.save(message);
   }
 }
