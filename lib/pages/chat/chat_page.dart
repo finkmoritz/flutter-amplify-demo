@@ -1,8 +1,7 @@
-import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
-import 'package:amplify_datastore/amplify_datastore.dart';
 import 'package:amplify_flutter/amplify.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_amplify_demo/models/Message.dart';
+import 'package:flutter_amplify_demo/services/chat_service.dart';
 
 class ChatPage extends StatefulWidget {
   @override
@@ -22,12 +21,12 @@ class _ChatPageState extends State<ChatPage> {
 
   _subscribe() {
     Amplify.DataStore
-        .observe(Message.classType)
-        .listen(
-            (event) {
-              _updateMessages();
-            }
-        );
+      .observe(Message.classType)
+      .listen(
+          (event) {
+            _updateMessages();
+          }
+      );
   }
 
   @override
@@ -36,12 +35,20 @@ class _ChatPageState extends State<ChatPage> {
       padding: const EdgeInsets.all(32.0),
       child: Column(
         children: [
+          _buildClearButton(),
           Expanded(
             child: _buildChatHistory(),
           ),
           _buildChatInput(),
         ],
       ),
+    );
+  }
+
+  Widget _buildClearButton() {
+    return TextButton(
+      child: Text('Delete all messages', style: TextStyle(color: Colors.red,),),
+      onPressed: () => ChatService.deleteAllMessages(),
     );
   }
 
@@ -68,7 +75,7 @@ class _ChatPageState extends State<ChatPage> {
         IconButton(
           icon: Icon(Icons.send,),
           onPressed: () {
-            _postMessage(controller.text);
+            ChatService.postMessage(controller.text);
             setState(() {
               controller.text = '';
             });
@@ -79,26 +86,7 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   _updateMessages() async {
-    messages = await Amplify.DataStore.query(
-      Message.classType,
-      sortBy: [Message.TIMESTAMP.ascending()],
-    );
+    messages = await ChatService.getMessages();
     setState(() {});
-  }
-
-  _postMessage(String content) async {
-    var username = 'Guest';
-    try{
-      var user = await Amplify.Auth.getCurrentUser();
-      username = user.username;
-    } on SignedOutException {
-      print('User is using guest access');
-    }
-    var message = Message(
-      user: username,
-      timestamp: TemporalDateTime.now(),
-      content: content,
-    );
-    Amplify.DataStore.save(message);
   }
 }
