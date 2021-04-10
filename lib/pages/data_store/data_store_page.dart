@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_amplify_demo/models/Message.dart';
 import 'package:flutter_amplify_demo/services/chat_service.dart';
 
-class ChatPage extends StatefulWidget {
+class DataStorePage extends StatefulWidget {
   @override
-  _ChatPageState createState() => _ChatPageState();
+  _DataStorePageState createState() => _DataStorePageState();
 }
 
-class _ChatPageState extends State<ChatPage> {
+class _DataStorePageState extends State<DataStorePage> {
   TextEditingController _controller;
   Future<List<Message>> _messages;
 
