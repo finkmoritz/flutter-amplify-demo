@@ -31,6 +31,11 @@ PODS:
     - AmplifyPlugins/AWSCognitoAuthPlugin
     - AWSPluginsCore
     - Flutter
+  - amplify_storage_s3 (0.0.1):
+    - Amplify
+    - amplify_core
+    - AmplifyPlugins/AWSS3StoragePlugin
+    - Flutter
   - AmplifyPlugins/AWSAPIPlugin (1.6.1):
     - AppSyncRealTimeClient (~> 1.4.0)
     - AWSCore (~> 2.23.0)
@@ -50,6 +55,10 @@ PODS:
     - AWSCore (~> 2.23.0)
     - AWSPinpoint (~> 2.23.0)
     - AWSPluginsCore (= 1.6.1)
+  - AmplifyPlugins/AWSS3StoragePlugin (1.6.1):
+    - AWSCore (~> 2.23.0)
+    - AWSPluginsCore (= 1.6.1)
+    - AWSS3 (~> 2.23.0)
   - AppSyncRealTimeClient (1.4.3):
     - Starscream (~> 3.1.0)
   - AWSAuthCore (2.23.1):
@@ -69,7 +78,11 @@ PODS:
   - AWSPluginsCore (1.6.1):
     - Amplify (= 1.6.1)
     - AWSCore (~> 2.23.0)
+  - AWSS3 (2.23.1):
+    - AWSCore (= 2.23.1)
   - Flutter (1.0.0)
+  - image_picker (0.0.1):
+    - Flutter
   - ObjectMapper (4.2.0)
   - SQLite.swift (0.12.2):
     - SQLite.swift/standard (= 0.12.2)
@@ -83,7 +96,9 @@ DEPENDENCIES:
   - amplify_core (from `.symlinks/plugins/amplify_core/ios`)
   - amplify_datastore (from `.symlinks/plugins/amplify_datastore/ios`)
   - amplify_flutter (from `.symlinks/plugins/amplify_flutter/ios`)
+  - amplify_storage_s3 (from `.symlinks/plugins/amplify_storage_s3/ios`)
   - Flutter (from `Flutter`)
+  - image_picker (from `.symlinks/plugins/image_picker/ios`)
 
 SPEC REPOS:
   trunk:
@@ -97,6 +112,7 @@ SPEC REPOS:
     - AWSMobileClient
     - AWSPinpoint
     - AWSPluginsCore
+    - AWSS3
     - ObjectMapper
     - SQLite.swift
     - Starscream
@@ -114,8 +130,12 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/amplify_datastore/ios"
   amplify_flutter:
     :path: ".symlinks/plugins/amplify_flutter/ios"
+  amplify_storage_s3:
+    :path: ".symlinks/plugins/amplify_storage_s3/ios"
   Flutter:
     :path: Flutter
+  image_picker:
+    :path: ".symlinks/plugins/image_picker/ios"
 
 SPEC CHECKSUMS:
   Amplify: 4d0c3b0871e1f268c81ce5e9b65532df0a013900
@@ -125,6 +145,7 @@ SPEC CHECKSUMS:
   amplify_core: 8b38d20089fe4f225c14db6892f586bd03824a42
   amplify_datastore: e73979905bbee5c192e59f6afcd4e0692c3132bf
   amplify_flutter: d64b45e3a016e491bbb2e110fee57e150daf2164
+  amplify_storage_s3: 784469070ec70527454e540ef0d501498f58927a
   AmplifyPlugins: 51dfaeafe662cd571c4d4dfd3bdc5987fef2d5a7
   AppSyncRealTimeClient: 04df4dffe57cfbd06da336d0bfcd5641ba9adcb5
   AWSAuthCore: d9f9c418df00f45f399e407dc6c2bce33870b0af
@@ -134,7 +155,9 @@ SPEC CHECKSUMS:
   AWSMobileClient: ffe1179b9e6d5db7cea3f807df7d47f5d00a5c65
   AWSPinpoint: a89df232548a0634def16dc4963d8493ff07c2a1
   AWSPluginsCore: f41f8a478fe3fd8839ec16278b86dededefb0628
+  AWSS3: 66bf4071639d0bebaec10e7b6587712df5f05a26
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
+  image_picker: 50e7c7ff960e5f58faa4d1f4af84a771c671bc4a
   ObjectMapper: 1eb41f610210777375fa806bf161dc39fb832b81
   SQLite.swift: d2b4642190917051ce6bd1d49aab565fe794eea3
   Starscream: 4bb2f9942274833f7b4d296a55504dcfc7edb7b0

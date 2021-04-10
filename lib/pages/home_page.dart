@@ -3,6 +3,7 @@ import 'package:flutter_amplify_demo/pages/analytics/analytics_page.dart';
 import 'package:flutter_amplify_demo/pages/auth/auth_page.dart';
 import 'package:flutter_amplify_demo/pages/auth/auth_status.dart';
 import 'package:flutter_amplify_demo/pages/chat/chat_page.dart';
+import 'package:flutter_amplify_demo/pages/storage/storage_page.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -16,6 +17,7 @@ class _HomePageState extends State<HomePage> {
   AuthPage _authPage;
   ChatPage _chatPage;
   AnalyticsPage _analyticsPage;
+  StoragePage _storagePage;
 
   @override
   void initState() {
@@ -25,6 +27,7 @@ class _HomePageState extends State<HomePage> {
     _authPage = AuthPage();
     _chatPage = ChatPage();
     _analyticsPage = AnalyticsPage();
+    _storagePage = StoragePage();
   }
 
   @override
@@ -52,6 +55,7 @@ class _HomePageState extends State<HomePage> {
           _authPage,
           _chatPage,
           _analyticsPage,
+          _storagePage,
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -78,6 +82,11 @@ class _HomePageState extends State<HomePage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.analytics),
             label: 'Analytics',
+            backgroundColor: Theme.of(context).primaryColor,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.storage),
+            label: 'Storage',
             backgroundColor: Theme.of(context).primaryColor,
           ),
         ],
