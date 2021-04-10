@@ -2,9 +2,9 @@ import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify.dart';
 
 class AuthService {
-  static Future<AuthUser> getUser() async {
+  static Future<AuthUser> getUser() {
     try {
-      return await Amplify.Auth.getCurrentUser();
+      return Amplify.Auth.getCurrentUser();
     } on SignedOutException {
       return null;
     }
@@ -16,9 +16,7 @@ class AuthService {
     } catch (e) {
       print(e);
     }
-    var result =
-        await Amplify.Auth.signIn(username: username, password: password);
-    return result;
+    return Amplify.Auth.signIn(username: username, password: password);
   }
 
   static Future<SignOutResult> signOut() async {
@@ -26,18 +24,16 @@ class AuthService {
     return Amplify.Auth.signOut();
   }
 
-  static Future<SignUpResult> signUp({String email, String username, String password}) async {
-    var result = await Amplify.Auth.signUp(
+  static Future<SignUpResult> signUp({String email, String username, String password}) {
+    return Amplify.Auth.signUp(
         username: username,
         password: password,
         options: CognitoSignUpOptions(userAttributes: {'email': email}));
-    return result;
   }
 
-  static Future<SignUpResult> confirmSignUp({String username, String confirmationCode}) async {
-    var result = await Amplify.Auth.confirmSignUp(
+  static Future<SignUpResult> confirmSignUp({String username, String confirmationCode}) {
+    return Amplify.Auth.confirmSignUp(
         username: username, confirmationCode: confirmationCode);
-    return result;
   }
 
   static Future<ResendSignUpCodeResult> resendConfirmationCode({String username}) {

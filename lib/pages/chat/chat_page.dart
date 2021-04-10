@@ -9,14 +9,21 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
-  var controller = TextEditingController();
-  var messages = <Message>[];
+  TextEditingController _controller;
+  Future<List<Message>> _messages;
 
   @override
   void initState() {
     super.initState();
+    _controller = TextEditingController();
     _subscribe();
     _updateMessages();
+  }
+
+  @override
+  dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   _subscribe() {
@@ -53,14 +60,25 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Widget _buildChatHistory() {
-    return ListView.builder(
-      itemCount: messages.length,
-      itemBuilder: (context, index) {
-        return ListTile(
-          title: Text(messages[index].user),
-          subtitle: Text(messages[index].content),
+    return FutureBuilder(
+      future: _messages,
+      builder: (context, snapshot) {
+        List<Message> messages = snapshot.data;
+        if(snapshot.connectionState == ConnectionState.done) {
+          return ListView.builder(
+              itemCount: messages.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(messages[index].user),
+                  subtitle: Text(messages[index].content),
+                );
+              }
+          );
+        }
+        return Center(
+          child: CircularProgressIndicator(),
         );
-      }
+      },
     );
   }
 
@@ -69,15 +87,15 @@ class _ChatPageState extends State<ChatPage> {
       children: [
         Expanded(
           child: TextFormField(
-            controller: controller,
+            controller: _controller,
           ),
         ),
         IconButton(
           icon: Icon(Icons.send,),
           onPressed: () {
-            ChatService.postMessage(controller.text);
+            ChatService.postMessage(_controller.text);
             setState(() {
-              controller.text = '';
+              _controller.text = '';
             });
           },
         ),
@@ -85,8 +103,9 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 
-  _updateMessages() async {
-    messages = await ChatService.getMessages();
-    setState(() {});
+  _updateMessages() {
+    setState(() {
+      _messages = ChatService.getMessages();
+    });
   }
 }
