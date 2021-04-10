@@ -1,14 +1,67 @@
 # Flutter Amplify Demo
 
-Small Flutter chat app demo with AWS Amplify integration.
+Flutter demo app with AWS Amplify integration. Features widgets with example use cases for
+- Authentication (Sign up/in, password management)
+- DataStore (CRUD operations with GraphQL schema)
+- Analytics (Record events)
+- Storage (Image up- & download)
 
-## How to build it from scratch within a few minutes
+---
 
-### Prerequisites
+**Content:**
+- [Prerequisites](#prerequisites)
+- [How to build the app](#how-to-build-the-app)
+- [(Optional) How to build the app from scratch](#how-to-build-the-app-from-scratch)
+- [Run the app](#run-the-app)
+
+---
+
+## Prerequisites
 
 - [Flutter](https://flutter.dev)
 - [Amplify](https://docs.amplify.aws/start/q/integration/flutter)
-together with an [AWS account](https://console.aws.amazon.com)
+  together with an [AWS account](https://console.aws.amazon.com)
+
+---
+
+## How to build the app
+
+Following the next sections will add the necessary AWS resources that this app will connect to.
+
+### Initialize Amplify
+
+- Run `amplify configure` and enter your access key
+- Run `amplify init`
+
+### Add Authentication
+
+- Run `amplify add auth` and allow guest access (Manual configuration).
+
+### Add DataStore
+
+- Run `amplify add api` and select GraphQL
+- Generate code from the [schema.graphql](amplify/backend/api/flutteramplifydemo/schema.graphql) with `amplify codegen models`
+
+### Add Storage
+
+- Run `amplify add storage`
+    - Content (Images, audio, video, etc.)
+    - Auth and guest users
+    - create/update, read & delete (for Auth and Guest users)
+    - Lambda Trigger? No
+
+### Add Analytics
+- Run `amplify add analytics` and select Amazon Pinpoint.
+
+### Push backend to cloud
+
+- Run `amplify push` in order to push your changes to the cloud.
+
+---
+
+## How to build the app from scratch
+
+Following the next sections will help you build a similar application from scratch.
 
 ### Create a new Flutter project
 
@@ -50,7 +103,7 @@ Amplify.addPlugins([
   
 ### Add Authentication
 
-Run `amplify add auth` and allow guest access (Manual configuration).
+- Run `amplify add auth` and allow guest access (Manual configuration).
 
 ### Add DataStore
 
@@ -71,8 +124,14 @@ Run `amplify add auth` and allow guest access (Manual configuration).
 
 ### Push backend to cloud
 
-Run `amplify push` in order to push your changes to the cloud.
+- Run `amplify push` in order to push your changes to the cloud.
 
 ### Implement frontend
 
 (Compare to implementation in [home_page.dart](lib/pages/home_page.dart))
+
+---
+
+## Run the app
+
+- Execute `flutter run` to run the app.
