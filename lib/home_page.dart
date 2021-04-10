@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_amplify_demo/pages/analytics/analytics_page.dart';
 import 'package:flutter_amplify_demo/pages/auth/auth_page.dart';
+import 'package:flutter_amplify_demo/pages/auth/auth_status.dart';
 import 'package:flutter_amplify_demo/pages/chat/chat_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -38,6 +39,9 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text('Flutter Amplify Demo'),
         automaticallyImplyLeading: false,
+        actions: [
+          AuthStatus(),
+        ],
       ),
       body: PageView(
         controller: _pageController,
