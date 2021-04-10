@@ -6,12 +6,14 @@ Flutter demo app with AWS Amplify integration. Features widgets with example use
 - Analytics (Record events)
 - Storage (Image up- & download)
 
+<img src="https://github.com/finkmoritz/flutter-amplify-demo/blob/master/screenshots/Preview.png" alt="Preview" width="100%"/>
+
 ---
 
 **Content:**
 - [Prerequisites](#prerequisites)
 - [How to build the app](#how-to-build-the-app)
-- [(Optional) How to build the app from scratch](#how-to-build-the-app-from-scratch)
+- [*(Optional)* How to build the app from scratch](#how-to-build-the-app-from-scratch)
 - [Run the app](#run-the-app)
 
 ---
