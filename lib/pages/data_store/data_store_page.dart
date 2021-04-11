@@ -1,7 +1,7 @@
 import 'package:amplify_flutter/amplify.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_amplify_demo/models/Message.dart';
-import 'package:flutter_amplify_demo/services/chat_service.dart';
+import 'package:flutter_amplify_demo/services/data_store_service.dart';
 
 class DataStorePage extends StatefulWidget {
   @override
@@ -55,7 +55,7 @@ class _DataStorePageState extends State<DataStorePage> {
   Widget _buildClearButton() {
     return TextButton(
       child: Text('Delete all messages', style: TextStyle(color: Colors.red,),),
-      onPressed: () => ChatService.deleteAllMessages(),
+      onPressed: () => DataStoreService.deleteAllMessages(),
     );
   }
 
@@ -93,7 +93,7 @@ class _DataStorePageState extends State<DataStorePage> {
         IconButton(
           icon: Icon(Icons.send,),
           onPressed: () {
-            ChatService.postMessage(_controller.text);
+            DataStoreService.postMessage(_controller.text);
             setState(() {
               _controller.text = '';
             });
@@ -105,7 +105,7 @@ class _DataStorePageState extends State<DataStorePage> {
 
   _updateMessages() {
     setState(() {
-      _messages = ChatService.getMessages();
+      _messages = DataStoreService.getMessages();
     });
   }
 }

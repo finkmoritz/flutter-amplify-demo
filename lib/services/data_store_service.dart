@@ -3,7 +3,7 @@ import 'package:amplify_flutter/amplify.dart';
 import 'package:flutter_amplify_demo/models/Message.dart';
 import 'package:flutter_amplify_demo/services/auth_service.dart';
 
-class ChatService {
+class DataStoreService {
   static Future<List<Message>> getMessages() async {
     return Amplify.DataStore.query(
       Message.classType,
