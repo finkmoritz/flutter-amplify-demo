@@ -32,8 +32,8 @@ Following the next sections will add the necessary AWS resources that this app w
 
 ### Initialize Amplify
 
-- Run `amplify configure` and enter your access key
-- Run `amplify init`
+- Run `amplify configure` and enter access key details of your IAM user
+- Run `amplify init` (default settings are fine) to create the amplifyconfiguration.dart file that we refer to in [main.dart](lib/main.dart)
 
 ### Add Authentication
 
@@ -72,7 +72,7 @@ in order to create the Flutter project.
 
 ### Initialize Amplify
 
-- Run `amplify configure` and enter your access key
+- Run `amplify configure` and enter access key details of your IAM user
 - Set the Android minSdkVersion to 21 in your [app/build.gradle](android/app/build.gradle) file
 - Set the iOS deployment target to 13.0 in the [Podfile](ios/Podfile) and add:
 ```
@@ -89,18 +89,34 @@ in order to create the Flutter project.
   amplify_datastore: '<1.0.0'
   amplify_storage_s3: '<1.0.0'
 ```
-- Run `amplify init`
+- Run `amplify init` (default settings are fine) to create the amplifyconfiguration.dart file that we refer to in [main.dart](lib/main.dart)
 - Initialize Amplify in the application using the provided code fragment from the
 [docs](https://docs.amplify.aws/lib/project-setup/create-application/q/platform/flutter#n3-provision-the-backend-with-amplify-cli)
-  and add all necessary plugins
+  and add all necessary plugins within your top level Stateful Widget, e.g.:
 ```
-Amplify.addPlugins([
-  AmplifyAuthCognito(),
-  AmplifyAPI(),
-  AmplifyAnalyticsPinpoint(),
-  AmplifyDataStore(modelProvider: ModelProvider.instance),
-  AmplifyStorageS3(),
-]);
+@override
+initState() {
+    super.initState();
+    _configureAmplify();
+}
+
+void _configureAmplify() async {
+    if (!mounted) return;
+    
+    Amplify.addPlugins([
+        AmplifyAuthCognito(),
+        AmplifyAPI(),
+        AmplifyAnalyticsPinpoint(),
+        AmplifyDataStore(modelProvider: ModelProvider.instance),
+        AmplifyStorageS3(),
+    ]);
+    
+    try {
+        await Amplify.configure(amplifyconfig);
+    } on AmplifyAlreadyConfiguredException {
+        print("Tried to reconfigure Amplify; this can occur when your app restarts on Android.");
+    }
+}
 ```
   
 ### Add Authentication
