@@ -8,18 +8,14 @@ class PasswordChangePage extends StatefulWidget {
 }
 
 class _PasswordChangePageState extends State<PasswordChangePage> {
-  final _formKey = GlobalKey<FormState>();
-
-  TextEditingController _oldPasswordController;
-  TextEditingController _newPasswordController;
+  final TextEditingController _oldPasswordController = TextEditingController();
+  final TextEditingController _newPasswordController = TextEditingController();
 
   int _stepIndex = 0;
 
   @override
   void initState() {
     super.initState();
-    _oldPasswordController = TextEditingController();
-    _newPasswordController = TextEditingController();
   }
 
   @override
@@ -101,55 +97,46 @@ class _PasswordChangePageState extends State<PasswordChangePage> {
   }
 
   Widget _buildChangePasswordForm() {
-    return Form(
-      key: _formKey,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          TextFormField(
-            controller: _oldPasswordController,
-            obscureText: true,
-            validator: (value) {
-              if (value.length < 8) {
-                return 'Password too short';
-              }
-              return null;
-            },
-            decoration: InputDecoration(hintText: 'Enter your old password'),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        TextFormField(
+          controller: _oldPasswordController,
+          obscureText: true,
+          decoration: InputDecoration(
+              icon: Icon(Icons.lock),
+              hintText: 'Enter your old password',
+              labelText: 'Old password'
           ),
-          TextFormField(
-            controller: _newPasswordController,
-            obscureText: true,
-            validator: (value) {
-              if (value.length < 8) {
-                return 'Password too short';
-              }
-              return null;
-            },
-            decoration: InputDecoration(hintText: 'Enter your new password'),
+        ),
+        TextFormField(
+          controller: _newPasswordController,
+          obscureText: true,
+          decoration: InputDecoration(
+              icon: Icon(Icons.lock),
+              hintText: 'Enter your new password',
+              labelText: 'New password'
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
   _changePassword() async {
-    if (_formKey.currentState.validate()) {
-      try {
-        await AuthService.changePassword(
-          oldPassword: _oldPasswordController.text.trim(),
-          newPassword: _newPasswordController.text.trim(),
-        );
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('Successfully changed password'),
-        ));
-        setState(() {
-          _stepIndex = 1;
-        });
-      } on AuthException catch (e) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(e.message)));
-      }
+    try {
+      await AuthService.changePassword(
+        oldPassword: _oldPasswordController.text.trim(),
+        newPassword: _newPasswordController.text.trim(),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Successfully changed password'),
+      ));
+      setState(() {
+        _stepIndex = 1;
+      });
+    } on AuthException catch (e) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(e.message)));
     }
   }
 }

@@ -8,26 +8,16 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  final _signUpFormKey = GlobalKey<FormState>();
-  final _confirmationFormKey = GlobalKey<FormState>();
-
-  final _emailRegEx = RegExp(
-      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
-
-  TextEditingController _usernameController;
-  TextEditingController _emailController;
-  TextEditingController _passwordController;
-  TextEditingController _confirmationCodeController;
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmationCodeController = TextEditingController();
 
   int _stepIndex = 0;
 
   @override
   void initState() {
     super.initState();
-    _usernameController = TextEditingController();
-    _emailController = TextEditingController();
-    _passwordController = TextEditingController();
-    _confirmationCodeController = TextEditingController();
   }
 
   @override
@@ -142,134 +132,111 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   Widget _buildSignUpForm() {
-    return Form(
-      key: _signUpFormKey,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          TextFormField(
-            controller: _emailController,
-            validator: (value) {
-              if (!_emailRegEx.hasMatch(value)) {
-                return 'Invalid email address';
-              }
-              return null;
-            },
-            decoration: InputDecoration(hintText: 'Enter your email address'),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        TextFormField(
+          controller: _emailController,
+          decoration: InputDecoration(
+              icon: Icon(Icons.mail),
+              hintText: 'Enter your email address',
+              labelText: 'Email address'
           ),
-          TextFormField(
-            controller: _usernameController,
-            validator: (value) {
-              if (value.length < 5) {
-                return 'Username too short';
-              }
-              return null;
-            },
-            decoration: InputDecoration(hintText: 'Choose your username'),
+        ),
+        TextFormField(
+          controller: _usernameController,
+          decoration: InputDecoration(
+              icon: Icon(Icons.person),
+              hintText: 'Choose your username',
+              labelText: 'Username'
           ),
-          TextFormField(
-            controller: _passwordController,
-            obscureText: true,
-            validator: (value) {
-              if (value.length < 8) {
-                return 'Password too short';
-              }
-              return null;
-            },
-            decoration: InputDecoration(hintText: 'Choose your password'),
+        ),
+        TextFormField(
+          controller: _passwordController,
+          obscureText: true,
+          decoration: InputDecoration(
+              icon: Icon(Icons.lock),
+              hintText: 'Choose your password',
+              labelText: 'Password'
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
   Widget _buildConfirmationForm() {
-    return Form(
-      key: _confirmationFormKey,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-              'We sent you an email with your confirmation code. Please check your inbox.'),
-          TextFormField(
-            controller: _usernameController,
-            validator: (value) {
-              if (value.length < 5) {
-                return 'Username too short';
-              }
-              return null;
-            },
-            decoration: InputDecoration(hintText: 'Enter your username'),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+            'We sent you an email with your confirmation code. Please check your inbox.'),
+        TextFormField(
+          controller: _usernameController,
+          decoration: InputDecoration(
+              icon: Icon(Icons.person),
+              hintText: 'Enter your username',
+              labelText: 'Username'
           ),
-          TextFormField(
-            controller: _confirmationCodeController,
-            validator: (value) {
-              if (value.isEmpty) {
-                return 'Please enter the confirmation code';
-              }
-              return null;
-            },
-            decoration:
-                InputDecoration(hintText: 'Enter your confirmation code'),
+        ),
+        TextFormField(
+          controller: _confirmationCodeController,
+          decoration: InputDecoration(
+              icon: Icon(Icons.check),
+              hintText: 'Enter your confirmation code',
+              labelText: 'Confirmation code'
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
   _signUp() async {
-    if (_signUpFormKey.currentState.validate()) {
-      try {
-        await AuthService.signUp(
-          email: _emailController.text.trim(),
-          username: _usernameController.text.trim(),
-          password: _passwordController.text.trim(),
-        );
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('Successfully signed up'),
-        ));
-        setState(() {
-          _stepIndex = 1;
-        });
-      } on AuthException catch (e) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(e.message)));
-      }
+    try {
+      await AuthService.signUp(
+        email: _emailController.text.trim(),
+        username: _usernameController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Successfully signed up'),
+      ));
+      setState(() {
+        _stepIndex = 1;
+      });
+    } on AuthException catch (e) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(e.message)));
     }
   }
 
   _resend() async {
-    if (_confirmationFormKey.currentState.validate()) {
-      try {
-        await AuthService.resendConfirmationCode(
-          username: _usernameController.text.trim(),
-        );
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('Sent confirmation code'),
-        ));
-      } on AuthException catch (e) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(e.message)));
-      }
+    try {
+      await AuthService.resendConfirmationCode(
+        username: _usernameController.text.trim(),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Sent confirmation code'),
+      ));
+    } on AuthException catch (e) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(e.message)));
     }
   }
 
   _confirm() async {
-    if (_confirmationFormKey.currentState.validate()) {
-      try {
-        SignUpResult result = await AuthService.confirmSignUp(
-          username: _usernameController.text.trim(),
-          confirmationCode: _confirmationCodeController.text.trim(),
-        );
-        if (result != null && result.isSignUpComplete) {
-          setState(() {
-            _stepIndex = 2;
-          });
-        }
-      } on AuthException catch (e) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(e.message)));
+    try {
+      SignUpResult result = await AuthService.confirmSignUp(
+        username: _usernameController.text.trim(),
+        confirmationCode: _confirmationCodeController.text.trim(),
+      );
+      if (result != null && result.isSignUpComplete) {
+        setState(() {
+          _stepIndex = 2;
+        });
       }
+    } on AuthException catch (e) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(e.message)));
     }
   }
 }

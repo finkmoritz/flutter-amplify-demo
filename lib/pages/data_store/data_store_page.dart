@@ -9,13 +9,12 @@ class DataStorePage extends StatefulWidget {
 }
 
 class _DataStorePageState extends State<DataStorePage> {
-  TextEditingController _controller;
+  final TextEditingController _controller = TextEditingController();
   Future<List<Message>> _messages;
 
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController();
     _subscribe();
     _updateMessages();
   }
@@ -88,6 +87,9 @@ class _DataStorePageState extends State<DataStorePage> {
         Expanded(
           child: TextFormField(
             controller: _controller,
+            decoration: InputDecoration(
+                hintText: 'Write a message...',
+            ),
           ),
         ),
         IconButton(
